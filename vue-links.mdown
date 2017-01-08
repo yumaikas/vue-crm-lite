@@ -1,6 +1,7 @@
 Links to keep: 
 - https://vuejs.org/v2/guide/instance.html
 - https://vuejs.org/v2/guide/class-and-style.html
+- https://vuejs.org/v2/guide/list.html#Caveats
 
 Features:
 
@@ -23,4 +24,4 @@ Features:
 
 - Non/deffered features:
 - - Authentication
-- - 
+- - Multi-user support
