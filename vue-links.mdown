@@ -1,0 +1,26 @@
+Links to keep: 
+- https://vuejs.org/v2/guide/instance.html
+- https://vuejs.org/v2/guide/class-and-style.html
+
+Features:
+
+- CRUD Contacts
+-- Create
+-- Remove/Archive
+-- Update
+-- Delete
+
+- Take notes on Contacts
+- - Note CRUD:
+-- Create 
+-- Remove/Archive
+-- Update 
+-- Delete
+
+
+- Search Contacts
+- mailto:, tel: and twitter/facebook/g+ Links
+
+- Non/deffered features:
+- - Authentication
+- - 
