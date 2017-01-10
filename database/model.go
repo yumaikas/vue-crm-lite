@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Contact is a contact
 type Contact struct {
 	ID       *int64
 	Name     sql.NullString
@@ -14,13 +15,14 @@ type Contact struct {
 	Modified sql.NullString
 }
 
+// Note is a note
 type Note struct {
 	ID       *int64
 	Body     sql.NullString
 	Modified sql.NullString
 }
 
-// CreateDB Fill out a contact, and now you'll have it'd ID field populated
+// CreateInDB Fill out a contact, and now you'll have it'd ID field populated
 func (c *Contact) CreateInDB() error {
 	res, err := db.Exec(`
     Insert into Contact (
@@ -41,7 +43,7 @@ func (c *Contact) CreateInDB() error {
 	return nil
 }
 
-// SaveDB Save updates to a contact to the databse
+// SaveInDB Save updates to a contact to the databse
 func (c Contact) SaveInDB() error {
 	_, err := db.Exec(`
     Update  Contact (
@@ -56,28 +58,6 @@ func (c Contact) SaveInDB() error {
 		return err
 	}
 	return nil
-}
-
-func getContact(id int) (Contact, error) {
-	contact := Contact{}
-	err := db.QueryRow(`
-        Select 
-            id, 
-            name, 
-            email, 
-            website, 
-            CASE updated_date 
-                WHEN NULL THEN datetime(created_date)
-                ELSE datetime(updated_date)
-            END
-     `, &id).Scan(
-		&contact.ID,
-		&contact.Name,
-		&contact.Email,
-		&contact.Website,
-		&contact.Modified,
-	)
-	return contact, err
 }
 
 func (c Contact) getNotes() ([]Note, error) {
@@ -101,8 +81,38 @@ func (c Contact) getNotes() ([]Note, error) {
 	}
 	var notes = make([]Note, 0)
 	for rows.Next() {
-		// var note = Note{}
-
+		var note = Note{}
+		rows.Scan(note.ID, &note.Body, &note.Modified)
+		notes = append(notes, note)
 	}
 	return notes, nil
+}
+
+// AllContacts Get all the contacts from the database
+func AllContacts() ([]Contact, error) {
+	panic("UNIMPLEMENTED")
+}
+
+// GetContact Fetch a contact from the database via it's ID
+func GetContact(id int) (Contact, error) {
+	contact := Contact{}
+	err := db.QueryRow(`
+        Select 
+            id, 
+            name, 
+            email, 
+            website, 
+            CASE updated_date 
+                WHEN NULL THEN datetime(created_date)
+                ELSE datetime(updated_date)
+            END
+            from contact where id = ?
+     `, id).Scan(
+		&contact.ID,
+		&contact.Name,
+		&contact.Email,
+		&contact.Website,
+		&contact.Modified,
+	)
+	return contact, err
 }
